@@ -1,10 +1,8 @@
 class CambioAceite {
 
-    constructor(fecha, notas, placa) {
-
+    constructor(fecha, notas, aceite) {
         this.fecha = fecha;
         this.notas = notas;
-        this.placa = placa;
-
+        this.aceite = aceite;
     }
 };

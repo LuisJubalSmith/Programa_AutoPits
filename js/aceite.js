@@ -1,9 +1,7 @@
 class Aceite {
-
-    constructor(marca, tipo, placa) {
-
+    constructor(marca, tipo) {
         this.marca = marca;
         this.tipo = tipo;
-        this.placa = placa;
     }
+
 };

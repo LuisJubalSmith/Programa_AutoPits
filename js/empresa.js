@@ -2,8 +2,7 @@ class Empresa {
     constructor(nombre) {
         this.nombre = nombre;
         this.autos = [];
-        this.cambioAceites = [];
-        this.aceites = [];
+
     }
 
 
@@ -16,9 +15,11 @@ class Empresa {
                 return;
             }
         }
+
         this.autos.push(auto);
         console.log(this.autos);
     }
+
     removerAuto(auto) {
 
         for (let j = 0; j < this.autos.length; j++) {
@@ -29,38 +30,7 @@ class Empresa {
         }
 
     }
-    registrarCambioAceite(cambioAceite) {
 
-        for (let j = 0; j < this.cambioAceites.length; j++) {
-            if (cambioAceite.placa === this.cambioAceites[j].placa) {
-                return;
-            }
-        }
-        this.cambioAceites.push(cambioAceite);
-        console.log(this.cambioAceites);
-    }
-
-    registroAceite(aceite) {
-        for (let x = 0; x < this.aceites.length; x++) {
-            if (aceite.placa === this.aceites[x].placa) {
-                return;
-            }
-        }
-        this.aceites.push(aceite);
-
-        console.log(this.aceites);
-    }
-
-    cargarDataset(placa) {
-
-        console.log(placa);
-        // console.log(event.target.dataset.placa);
-        for (let i = 0; i < this.cambioAceites.length; i++) {
-            if (placa === this.autos[i].placa) {
-                return;
-            }
-        }
-    }
 
 
 

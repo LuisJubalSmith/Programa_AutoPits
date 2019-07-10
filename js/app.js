@@ -2,26 +2,37 @@ window.addEventListener('load', init, false);
 
 function init() {
 
-    let iptPlacaTxt = document.getElementById("iptPlacaTxt");
-    let iptModeloTxt = document.getElementById("iptModeloTxt");
-    let iptMarcaTxt = document.getElementById("iptMarcaTxt");
-    let sltFechaCambioAceite = document.getElementById("sltFechaCambioAceite");
-    let iptMarcaAceiteTxt = document.getElementById("iptMarcaAceiteTxt");
-    let iptTipoAceiteTxt = document.getElementById("iptTipoAceiteTxt");
-    let iptNotasTxt = document.getElementById("iptNotasTxt");
-    let btnAdd = document.getElementById("btnAdd");
-    let btnSalvarCambio = document.getElementById("btnSalvarCambio");
-    let table = document.getElementById("table");
+    const iptPlacaTxt = document.getElementById("iptPlacaTxt");
+    const iptModeloTxt = document.getElementById("iptModeloTxt");
+    const iptMarcaTxt = document.getElementById("iptMarcaTxt");
+    const sltFechaCambioAceite = document.getElementById("sltFechaCambioAceite");
+    const sltMarcaAceiteTxt = document.getElementById("sltMarcaAceiteTxt");
+    const iptNotasTxt = document.getElementById("iptNotasTxt");
+    const btnAdd = document.getElementById("btnAdd");
+    const btnSalvarCambio = document.getElementById("btnSalvarCambio");
+    const table = document.getElementById("table");
+    const table2 = document.getElementById('table2')
 
-    let AutoPits = new Empresa('AutoPits');
-    AutoPits.registrarAuto(new Auto('509894', 'Geo', 'Trackrs', 2));
+    const autoPits = new Empresa('AutoPits');
+    autoPits.registrarAuto(new Auto('509894', 'Geo', 'Trackrs', 2));
 
-    mostrarTabla();
+    mostrarTablaCarros();
+
+
+    let aceites = [];
+    aceites.push(new Aceite("Castrol", "MP56"));
+    aceites.push(new Aceite("Shell", "SuperShell"));
+    aceites.push(new Aceite("Valvoline", "2456"));
+    aceites.push(new Aceite("Ucra", "BNG455"));
+    aceites.push(new Aceite("DL", "DL777"));
+
+    let currentAuto = null;
+
+    sltMarcaAceite();
 
 
 
     btnAdd.onclick = function btnAddOnClick() {
-
 
         let placa = Number(iptPlacaTxt.value);
         let modelo = iptModeloTxt.value;
@@ -30,10 +41,10 @@ function init() {
 
         if (placa !== '' && modelo !== '' && marca !== '') {
 
-            let cambioAceite = datosCambioAceite();
-            let newAuto = new Auto(placa, modelo, marca, cambioAceite);
 
-            AutoPits.registrarAuto(newAuto);
+            let newAuto = new Auto(placa, modelo, marca);
+
+            autoPits.registrarAuto(newAuto);
 
             Swal.fire({
                 position: 'top',
@@ -50,17 +61,28 @@ function init() {
                 footer: '<a href>Falta algun campo por llenar</a>'
             })
         }
+
         iptPlacaTxt.value = '';
         iptModeloTxt.value = '';
         iptMarcaTxt.value = '';
-        mostrarTabla();
-
-
+        mostrarTablaCarros();
     }
 
-    function mostrarTabla() {
 
-        resultadoH3.innerHTML = "Tabla Cambio Aceite Autopits";
+    function sltMarcaAceite() {
+
+        for (let index = 0; index < aceites.length; index++) {
+            let option = document.createElement('option');
+            option.innerHTML = aceites[index].marca;
+            option.value = index;
+            sltMarcaAceiteTxt.appendChild(option);
+        }
+    }
+
+
+    function mostrarTablaCarros() {
+
+        resultadoH3.innerHTML = "Tabla Auto-Clientes Autopits";
         table.innerHTML = '';
 
         let tr = document.createElement('tr');
@@ -94,34 +116,33 @@ function init() {
         tr.appendChild(th);
         th.innerHTML = 'Eliminar';
 
-        for (let i = 0; i < AutoPits.autos.length; i++) {
+        for (let i = 0; i < autoPits.autos.length; i++) {
 
             tr = document.createElement('tr');
             table.appendChild(tr);
 
             let td = document.createElement('td');
             tr.appendChild(td);
-            td.innerHTML = AutoPits.autos[i].placa;
+            td.innerHTML = autoPits.autos[i].placa;
 
             td = document.createElement('td');
             tr.appendChild(td);
-            td.innerHTML = AutoPits.autos[i].modelo;
+            td.innerHTML = autoPits.autos[i].modelo;
 
             td = document.createElement('td');
             tr.appendChild(td);
-            td.innerHTML = AutoPits.autos[i].marca;
+            td.innerHTML = autoPits.autos[i].marca;
 
             td = document.createElement('td');
             tr.appendChild(td);
-            td.innerHTML = AutoPits.autos[i].cambioAceite;
+            td.innerHTML = autoPits.autos[i].cambioAceites.length;
 
             td = document.createElement('td');
             tr.appendChild(td);
             let modificarBtn = document.createElement('button');
             modificarBtn.innerHTML = 'Mostrar';
             modificarBtn.onclick = mostrar;
-            modificarBtn.autoPlaca = AutoPits.autos[i];
-            modificarBtn.dataset.placa = AutoPits.autos[i].placa;
+            modificarBtn.placa = autoPits.autos[i].placa;
             td.appendChild(modificarBtn);
 
             td = document.createElement('td');
@@ -131,8 +152,7 @@ function init() {
             agregarBtn.setAttribute('data-toggle', 'modal');
             agregarBtn.setAttribute('data-target', '#cambioAceite');
             agregarBtn.onclick = agregar;
-            agregarBtn.autoPlaca = AutoPits.autos[i];
-            agregarBtn.dataset.placa = AutoPits.autos[i].placa;
+            agregarBtn.placa = autoPits.autos[i].placa;
             td.appendChild(agregarBtn);
 
             td = document.createElement('td');
@@ -140,16 +160,14 @@ function init() {
             let eliminarBtn = document.createElement('button');
             eliminarBtn.innerHTML = 'Eliminar';
             eliminarBtn.onclick = eliminar;
-            eliminarBtn.autoPlaca = AutoPits.autos[i];
-            eliminarBtn.dataset.placa = AutoPits.autos[i].placa;
+            eliminarBtn.dataset.placa = autoPits.autos[i].placa;
             td.appendChild(eliminarBtn);
         }
     }
 
-
     function eliminar(event) {
 
-        if (AutoPits.autos.length === 0) {
+        if (autoPits.autos.length === 0) {
             Toast.fire({
                 type: 'warning',
                 title: 'Empty list',
@@ -173,8 +191,8 @@ function init() {
                         })
                     }
                     if (result.value === true) {
-                        AutoPits.removerAuto(event.target.autoPlaca);
-                        mostrarTabla();
+                        autoPits.removerAuto(event.target.autoPlaca);
+                        mostrarTablaCarros();
                     }
                 }
 
@@ -184,17 +202,7 @@ function init() {
     }
 
 
-
-    function datosCambioAceite() {
-
-        let patito = prompt("Cambio Aceite");
-        return patito;
-    }
-
-
     btnSalvarCambio.onclick = function btnSalvarCambioOnClick() {
-
-
 
         let fechaCambioAceite = new Date(sltFechaCambioAceite.value);
         let month = fechaCambioAceite.getMonth();
@@ -202,26 +210,101 @@ function init() {
         let day = fechaCambioAceite.getDay();
         let year = fechaCambioAceite.getFullYear();
         let fechaTotal = month + '/' + day + '/' + year;
-        let iptMarcaAceite = iptMarcaAceiteTxt.value;
-        let iptTipoAceite = iptTipoAceiteTxt.value;
+        let aceite = aceites[sltMarcaAceiteTxt.value];
         let iptNotas = iptNotasTxt.value;
-        let iptPlaca = agregar();
 
 
-        if (fechaTotal !== '' && iptMarcaAceite !== '' && iptTipoAceite !== '' && iptNotas !== '' && iptPlaca !== '') {
+        //TODO: Pasar el objeto correct de aceite
 
-            let newCambioAceite = new CambioAceite(fechaTotal, iptNotas, iptPlaca);
+        if (fechaTotal !== '' && iptNotas !== '') {
 
-            AutoPits.registrarCambioAceite(newCambioAceite);
+            let newCambioAceite = new CambioAceite(fechaTotal, iptNotas, aceite)
+
+            currentAuto.cambioAceites.push(newCambioAceite);
+            mostrarTablaCarros();
         }
+
+        sltFechaCambioAceite.value = '';
+        sltMarcaAceiteTxt.value = '';
+        iptNotas.value = '';
 
     }
 
-    function mostrar() {}
+    function mostrarTablaCambios(auto) {
+
+        resultadoH2.innerHTML = "Tabla Cambio Aceite Autopits";
+        table2.innerHTML = '';
+
+        let tr = document.createElement('tr');
+        table2.appendChild(tr);
+
+        let th = document.createElement('th');
+        tr.appendChild(th);
+        th.innerHTML = 'Fecha Cambio de Aceite';
+
+        th = document.createElement('th');
+        tr.appendChild(th);
+        th.innerHTML = 'Marca de Aceite';
+
+        th = document.createElement('th');
+        tr.appendChild(th)
+        th.innerHTML = 'Notas';
+
+        th = document.createElement('th');
+        tr.appendChild(th);
+        th.innerHTML = 'Placa';
+
+        for (let i = 0; i < auto.cambioAceites.length; i++) {
+
+
+            tr = document.createElement('tr');
+            table2.appendChild(tr);
+
+            let td = document.createElement('td');
+            tr.appendChild(td);
+            td.innerHTML = auto.cambioAceites[i].fecha;
+
+            td = document.createElement('td');
+            tr.appendChild(td);
+            td.innerHTML = auto.cambioAceites[i].aceite.marca;
+
+            td = document.createElement('td');
+            tr.appendChild(td);
+            td.innerHTML = auto.cambioAceites[i].notas;
+
+            td = document.createElement('td');
+            tr.appendChild(td);
+            td.innerHTML = auto.placa;
+
+
+        }
+    }
 
     function agregar(event) {
-        // AutoPits.agregarBtn(event.target.dataset.placa);
-        // return;
+
+
+        let placa = event.target.placa;
+
+        autoPits.autos.forEach(auto => {
+            if (auto.placa === placa) {
+                currentAuto = auto;
+            }
+        });
+
+    }
+
+    function mostrar(e) {
+
+        let placa = e.target.placa;
+        console.log(placa);
+
+
+        autoPits.autos.forEach(auto => {
+            if (auto.placa === placa) {
+                mostrarTablaCambios(auto)
+            }
+        });
+
     }
 
 

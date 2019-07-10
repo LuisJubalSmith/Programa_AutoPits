@@ -34,13 +34,13 @@
             <h2 class="text-left">Autos</h2>
 
             <div class="form-group col-md-2">
-                <input type="text" class="form-control mt-5" id="iptPlacaTxt" placeholder="Placa">
+                <input type="number" class="form-control mt-5" id="iptPlacaTxt" placeholder="Placa" required>
             </div>
             <div class="form-group col-md-2">
-                <input type="text" class="form-control mt-5" id="iptModeloTxt" placeholder="Modelo">
+                <input type="text" class="form-control mt-5" id="iptModeloTxt" placeholder="Modelo" required>
             </div>
             <div class="form-group col-md-2">
-                <input type="text" class="form-control mt-5" id="iptMarcaTxt" placeholder="Marca">
+                <input type="text" class="form-control mt-5" id="iptMarcaTxt" placeholder="Marca" required>
             </div>
             <div class="form-group col-md-3">
                 <button type="button" class="font-weight-bold mt-5" id="btnAdd">AGREGAR</button>
@@ -61,24 +61,27 @@
                         <input type="date" id="sltFechaCambioAceite" class="form-control" name="fechaCambioAceite_txt" title="Fecha cambio de aceite" required />
                     </div>
                     <div class="modal-body">
-                        <input type="text" class="form-control" id="iptMarcaAceiteTxt" placeholder="Marca Aceite">
-                    </div>
-                    <div class="modal-body">
-                        <input type="text" class="form-control" id="iptTipoAceiteTxt" placeholder="Tipo Aceite">
+                        <!-- <input type="text" class="form-control" id="iptMarcaAceiteTxt" placeholder="Marca Aceite" required> -->
+                        <select name="MarcaAceite" id="sltMarcaAceiteTxt" class="form-control" required>
+                            <option value=""> </option>
+                        </select>
                     </div>
                     <div class="modal-body">
                         <textarea rows="5" class="form-control" id="iptNotasTxt" placeholder="Notas"></textarea>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="btnSalvarCambio" data-dismiss="modal">Save
-                            changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" id="btnSalvarCambio" data-dismiss="modal">Salvar</button>
                     </div>
                 </div>
             </div>
         </div>
         <h2 id="resultadoH3"></h2>
         <table id="table">
+
+        </table>
+        <h2 id="resultadoH2"></h2>
+        <table id="table2">
 
         </table>
     </section>
